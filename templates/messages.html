@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="chat-layout">
+  <aside class="chat-users card">
+    <h3 style="margin-top:0">Съобщения</h3>
+    {% for u in users %}
+      <a class="chat-user" href="{{ url_for('messages_inbox', peer=u.id) }}">{{ u.full_name }}</a>
+    {% endfor %}
+  </aside>
+  <div class="chat-window card">
+    {% if peer %}
+      <h3 style="margin:0 0 10px 0">Чат с {{ peer.full_name }}</h3>
+      <div class="messages">
+        {% for m in conversation %}
+          <div class="msg {{ 'mine' if m.sender_id == me.id else 'theirs' }}">{{ m.message }}</div>
+        {% else %}<p>Няма съобщения.</p>{% endfor %}
+      </div>
+      <form method="post" action="{{ url_for('messages_send') }}" class="msg-form">
+        <input type="hidden" name="peer_id" value="{{ peer.id }}">
+        <input name="message" placeholder="Напиши съобщение..." required>
+        <button>Изпрати</button>
+      </form>
+    {% else %}
+      <h3 style="margin-top:0">Избери разговор</h3>
+      <p>Избери потребител отляво, за да започнеш чат.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

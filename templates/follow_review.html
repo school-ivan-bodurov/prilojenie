@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Чакащи follow заявки</h2>
+{% for r in pending %}<article class="card"><b>{{ r.full_name }}</b>
+<form method="post" class="inline"><input type="hidden" name="fr_id" value="{{ r.id }}"><button name="action" value="approve">Одобри</button><button name="action" value="reject">Откажи</button></form>
+</article>{% else %}<p>Няма чакащи заявки.</p>{% endfor %}
+{% endblock %}
