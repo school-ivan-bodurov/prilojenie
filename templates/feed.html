@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="grid2">
+<div>
+  <form method="post" action="{{ url_for('create_post') }}" enctype="multipart/form-data" class="card form-grid">
+    <h3>Нов пост</h3>
+    <textarea name="content" required></textarea>
+    <input type="file" name="image" accept="image/*">
+    <button>Публикувай</button>
+  </form>
+  <form method="post" action="{{ url_for('create_story') }}" enctype="multipart/form-data" class="card form-grid">
+    <h3>Ново стори</h3>
+    <input name="content" placeholder="Кратък текст">
+    <input type="file" name="image" accept="image/*">
+    <button>Качи стори</button>
+  </form>
+</div>
+<div>
+  {% if role_labels[user.role] in ['Директор','Системен администратор'] %}
+  <a class="btn" href="{{ url_for('admin_registrations') }}">Заявки за регистрация</a>
+  {% endif %}
+  <h3>Активни сторита</h3>
+  {% for s in stories %}<article class="card"><b>{{ s.full_name }}</b><p>{{ s.content }}</p>{% if s.image_path %}<img src="{{ url_for('static', filename=s.image_path) }}">{% endif %}</article>{% else %}<p>Няма сторита.</p>{% endfor %}
+</div>
+</section>
+<h2>Поток</h2>
+{% for p in posts %}
+<article class="card">
+  <b><a href="{{ url_for('profile', user_id=p.user_id) }}">{{ p.full_name }}</a></b>
+  <p>{{ p.content }}</p>
+  {% if p.image_path %}<img src="{{ url_for('static', filename=p.image_path) }}">{% endif %}
+</article>
+{% endfor %}
+{% endblock %}
