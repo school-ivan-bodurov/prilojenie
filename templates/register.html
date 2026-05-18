@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" class="card form-grid">
+  <h2>Регистрация</h2>
+  <input name="full_name" placeholder="Три имена" required>
+  <input name="class_name" placeholder="Клас (напр. 12A)">
+  <input type="number" name="graduation_year" placeholder="Година на завършване">
+  <select name="role" required>
+    {% for code, label in roles.items() %}
+    <option value="{{ code }}">{{ label }}</option>
+    {% endfor %}
+  </select>
+  <input type="email" name="email" placeholder="Имейл" required>
+  <input type="password" name="password" placeholder="Парола" required>
+  <button>Създай профил</button>
+</form>
+{% endblock %}
