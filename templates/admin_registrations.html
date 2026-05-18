@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Чакащи регистрации</h2>
+{% for u in pending %}
+<article class="card">
+  <b>{{ u.full_name }}</b> - {{ labels[u.role] }} | {{ u.class_name }} | {{ u.graduation_year or '-' }}
+  <form method="post" class="inline">
+    <input type="hidden" name="user_id" value="{{ u.id }}">
+    <button name="action" value="approve">Одобри</button>
+    <button name="action" value="reject">Отхвърли</button>
+  </form>
+</article>
+{% else %}<p>Няма чакащи заявки.</p>{% endfor %}
+{% endblock %}
