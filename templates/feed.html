@@ -1,38 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="story-row">
-  {% for s in stories %}
-  <article class="story-card">
-    <div class="story-user">{{ s.full_name }}</div>
-    {% if s.image_path %}<img src="{{ url_for('static', filename=s.image_path) }}">{% endif %}
-    <small>{{ s.content }}</small>
-  </article>
-  {% else %}<p>Няма активни сторита.</p>{% endfor %}
+<section class="grid2">
+<div>
+  <form method="post" action="{{ url_for('create_post') }}" enctype="multipart/form-data" class="card form-grid">
+    <h3>Нов пост</h3>
+    <textarea name="content" required></textarea>
+    <input type="file" name="image" accept="image/*">
+    <button>Публикувай</button>
+  </form>
+  <form method="post" action="{{ url_for('create_story') }}" enctype="multipart/form-data" class="card form-grid">
+    <h3>Ново стори</h3>
+    <input name="content" placeholder="Кратък текст">
+    <input type="file" name="image" accept="image/*">
+    <button>Качи стори</button>
+  </form>
+</div>
+<div>
+  {% if role_labels[user.role] in ['Директор','Системен администратор'] %}
+  <a class="btn" href="{{ url_for('admin_registrations') }}">Заявки за регистрация</a>
+  {% endif %}
+  <h3>Активни сторита</h3>
+  {% for s in stories %}<article class="card"><b>{{ s.full_name }}</b><p>{{ s.content }}</p>{% if s.image_path %}<img src="{{ url_for('static', filename=s.image_path) }}">{% endif %}</article>{% else %}<p>Няма сторита.</p>{% endfor %}
+</div>
 </section>
-
-<section class="layout">
-  <div>
-    <form method="post" action="{{ url_for('create_post') }}" enctype="multipart/form-data" class="card form-grid">
-      <h3>Създай публикация</h3>
-      <textarea name="content" required placeholder="Какво ново?"></textarea>
-      <input type="file" name="image" accept="image/*">
-      <button>Публикувай</button>
-    </form>
-    <form method="post" action="{{ url_for('create_story') }}" enctype="multipart/form-data" class="card form-grid">
-      <h3>Добави стори</h3>
-      <input name="content" placeholder="Текст за стори">
-      <input type="file" name="image" accept="image/*">
-      <button>Качи стори</button>
-    </form>
-
-    {% for p in posts %}<article class="card post"><b><a href="{{ url_for('profile', user_id=p.user_id) }}">{{ p.full_name }}</a> · {{ role_labels[p.role] }}</b><p>{{ p.content }}</p>{% if p.image_path %}<img src="{{ url_for('static', filename=p.image_path) }}">{% endif %}</article>{% else %}<p>Няма публикации.</p>{% endfor %}
-  </div>
-  <aside class="card">
-    <h3>Администрация</h3>
-    {% if ROLE_LEVELS[user.role] >= 4 %}
-    <a class="btn" href="{{ url_for('admin_registrations') }}">Одобрения</a>
-    <a class="btn" href="{{ url_for('admin_directory') }}">Училищен регистър</a>
-    {% else %}<p>Нямате админ права.</p>{% endif %}
-  </aside>
-</section>
+<h2>Поток</h2>
+{% for p in posts %}
+<article class="card">
+  <b><a href="{{ url_for('profile', user_id=p.user_id) }}">{{ p.full_name }}</a></b>
+  <p>{{ p.content }}</p>
+  {% if p.image_path %}<img src="{{ url_for('static', filename=p.image_path) }}">{% endif %}
+</article>
+{% endfor %}
 {% endblock %}

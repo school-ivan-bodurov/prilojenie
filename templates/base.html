@@ -1,28 +1,30 @@
 <!doctype html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlumniNet</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Alumni Network</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">AlumniNet</div>
-  <nav>
-    {% if session.get('user_id') %}
-      <a href="{{ url_for('feed') }}">Начало</a>
-      <a href="{{ url_for('messages_inbox') }}">Чат</a>
-      <a href="{{ url_for('follow_review') }}">Заявки</a>
-      <a href="{{ url_for('profile', user_id=session.get('user_id')) }}">Профил</a>
-      <a href="{{ url_for('edit_profile') }}">Настройки</a>
-      <a href="{{ url_for('logout') }}">Изход</a>
-    {% else %}
-      <a href="{{ url_for('register') }}">Регистрация</a><a href="{{ url_for('login') }}">Вход</a>
-    {% endif %}
-  </nav>
-</header>
-<main class="container">
-  {% with messages = get_flashed_messages(with_categories=true) %}{% for c,m in messages %}<p class="flash {{ c }}">{{ m }}</p>{% endfor %}{% endwith %}
+<nav>
+  <a href="{{ url_for('index') }}">Начало</a>
+  {% if session.get('user_id') %}
+  <a href="{{ url_for('feed') }}">Поток</a>
+  <a href="{{ url_for('edit_profile') }}">Профил</a>
+  <a href="{{ url_for('logout') }}">Изход</a>
+  {% else %}
+  <a href="{{ url_for('register') }}">Регистрация</a>
+  <a href="{{ url_for('login') }}">Вход</a>
+  {% endif %}
+</nav>
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <p class="flash {{ category }}">{{ message }}</p>
+    {% endfor %}
+  {% endwith %}
   {% block content %}{% endblock %}
 </main>
-</body></html>
+</body>
+</html>
