@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <section class="card">
-<h2>{{ profile.full_name }}</h2>
-<p>{{ labels[profile.role] }} | Последен клас: {{ profile.class_name or '-' }} | Випуск: {{ profile.graduation_year or '-' }}</p>
-<p>Последна работа: {{ profile.workplace or 'Няма данни' }}</p>
-<p>{{ profile.bio }}</p>
-<p>Последователи: {{ followers }} | Следва: {{ following }}</p>
-{% if session.get('user_id') != profile.id and relation is none %}
-<form method="post" action="{{ url_for('follow', target_id=profile.id) }}"><button>Последвай</button></form>
-{% elif relation %}<p>Статус на заявка: {{ relation.status }}</p>{% endif %}
+  <h2>{{ profile.full_name }}</h2>
+  <p>{{ labels[profile.role] }}</p>
+  <p>Клас: {{ profile.class_name }} | Завършване: {{ profile.graduation_year or '-' }}</p>
+  <p>Работи в: {{ profile.workplace or 'Не е посочено' }}</p>
+  <p>{{ profile.bio }}</p>
 </section>
 {% if visible %}
-<h3>Постове</h3>{% for p in posts %}<article class="card"><p>{{ p.content }}</p>{% if p.image_path %}<img src="{{ url_for('static', filename=p.image_path) }}">{% endif %}</article>{% else %}<p>Няма постове.</p>{% endfor %}
-{% else %}<p>Профилът е поверителен.</p>{% endif %}
+<h3>Постове</h3>
+{% for p in posts %}<article class="card"><p>{{ p.content }}</p>{% if p.image_path %}<img src="{{ url_for('static', filename=p.image_path) }}">{% endif %}</article>{% else %}<p>Няма постове.</p>{% endfor %}
+{% else %}
+<p>Профилът е поверителен.</p>
+{% endif %}
 {% endblock %}

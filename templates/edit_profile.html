@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post" enctype="multipart/form-data" class="card form-grid">
-<h2>Редакция на профил</h2>
-<textarea name="bio" placeholder="Био">{{ user.bio }}</textarea>
-<input name="workplace" placeholder="Текуща работа" value="{{ user.workplace }}">
-<input type="file" name="avatar" accept="image/*">
-<label><input type="checkbox" name="is_private" {% if user.is_private %}checked{% endif %}> Поверителен профил</label>
-<button>Запази</button>
+<form method="post" class="card form-grid">
+  <h2>Редакция на профил</h2>
+  <textarea name="bio" placeholder="Био">{{ user.bio }}</textarea>
+  <input name="workplace" placeholder="Текуща работа" value="{{ user.workplace }}">
+  <label><input type="checkbox" name="is_private" {% if user.is_private %}checked{% endif %}> Поверителен профил</label>
+  <button>Запази</button>
 </form>
 {% endblock %}
