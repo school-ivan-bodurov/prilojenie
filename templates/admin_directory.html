@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" class="card form-grid">
+<h2>Добави ученик в регистър</h2>
+<input name="full_name" placeholder="Три имена" required>
+<input name="class_name" placeholder="Клас" required>
+<input type="number" name="graduation_year" placeholder="Година на завършване">
+<label><input type="checkbox" name="is_graduate"> Завършил</label>
+<button>Добави</button>
+</form>
+<h2>Регистър</h2>
+{% for row in rows %}<article class="card">{{ row.full_name }} | {{ row.class_name }} | {{ row.graduation_year or '-' }} | {{ 'завършил' if row.is_graduate else 'учащ' }}</article>{% endfor %}
+{% endblock %}

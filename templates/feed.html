@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="grid2">
+<div>
+<form method="post" action="{{ url_for('create_post') }}" enctype="multipart/form-data" class="card form-grid">
+<h3>Нов пост</h3><textarea name="content" required></textarea><input type="file" name="image" accept="image/*"><button>Публикувай</button></form>
+<form method="post" action="{{ url_for('create_story') }}" enctype="multipart/form-data" class="card form-grid">
+<h3>Ново стори</h3><input name="content" placeholder="Кратък текст"><input type="file" name="image" accept="image/*"><button>Качи стори</button></form>
+</div>
+<div class="card">
+<h3>Бързи действия</h3>
+{% if ROLE_LEVELS[user.role] >= 4 %}
+<a class="btn" href="{{ url_for('admin_registrations') }}">Регистрации</a>
+<a class="btn" href="{{ url_for('admin_directory') }}">Училищен регистър</a>
+{% endif %}
+</div>
+</section>
+<h2>Сторита</h2>
+{% for s in stories %}<article class="card"><b>{{ s.full_name }}</b><p>{{ s.content }}</p>{% if s.image_path %}<img src="{{ url_for('static', filename=s.image_path) }}">{% endif %}</article>{% else %}<p>Няма активни сторита.</p>{% endfor %}
+<h2>Поток</h2>
+{% for p in posts %}<article class="card"><b><a href="{{ url_for('profile', user_id=p.user_id) }}">{{ p.full_name }}</a> ({{ role_labels[p.role] }})</b><p>{{ p.content }}</p>{% if p.image_path %}<img src="{{ url_for('static', filename=p.image_path) }}">{% endif %}</article>{% else %}<p>Няма публикации.</p>{% endfor %}
+{% endblock %}
